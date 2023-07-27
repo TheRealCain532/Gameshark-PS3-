@@ -274,6 +274,29 @@ namespace GSAPI
             this.IP = IP;
             debug = true;
         }
+        /// <summary>
+        /// Simple struct to make parsing data easier. Haven't implemented to primary code yet...
+        /// </summary>
+        public struct GameSharkCode
+        {
+            public string identifier;
+            public uint address;
+            public byte[] value;
+        }
+        /// <summary>
+        /// Provided an active connection with PS3, this will convert a GameShark code into a PS3 format
+        /// </summary>
+        /// <param name="input">GameShark code</param>
+        /// <returns>Structure of converted GameShark code</returns>
+        public GameSharkCode getCodeData(string input)
+        {
+            GameSharkCode result = new GameSharkCode();
+            result.identifier = input.Remove(2);
+            result.address = (Convert.ToUInt32(input.Split(' ')[0].Remove(0, 2), 16) + magic);
+            result.value = STBA(input.Split(' ')[1]);
+            return result;
+        }
     }
+}
 
 }
